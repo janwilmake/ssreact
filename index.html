@@ -2,7 +2,34 @@
 <html>
 
 <head>
-    <title>Stupid Simple React</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stupid Simple React - React-in-HTML from a 21kb bundle</title>
+    <meta name="description"
+        content="ssreact uses preact and a tiny JSX compiler and some scaffolding to make it possible to run react directly in HTML with a single script import. The bundle is just 21KB minified, small enough to use in production if you ask me." />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://ssreact.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="React-in-HTML from a 21kb bundle" />
+    <meta property="og:description"
+        content="ssreact uses preact and a tiny JSX compiler and some scaffolding to make it possible to run react directly in HTML with a single script import. The bundle is just 21KB minified, small enough to use in production if you ask me." />
+    <meta property="og:image" content="https://quickog.com/screenshot/ssreact.com" />
+    <meta property="og:image:alt"
+        content="ssreact uses preact and a tiny JSX compiler and some scaffolding to make it possible to run react directly in HTML with a single script import. The bundle is just 21KB minified, small enough to use in production if you ask me." />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="ssreact.com" />
+    <meta property="twitter:url" content="https://ssreact.com" />
+    <meta name="twitter:title" content="React-in-HTML from a 21kb bundle" />
+    <meta name="twitter:description"
+        content="ssreact uses preact and a tiny JSX compiler and some scaffolding to make it possible to run react directly in HTML with a single script import. The bundle is just 21KB minified, small enough to use in production if you ask me." />
+    <meta name="twitter:image" content="https://quickog.com/screenshot/ssreact.com" />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ssreact.com/min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
@@ -95,6 +122,9 @@
 &lt;script src="https://ssreact.com/min.js">&lt;/script>
 
 // 2. Write your component
+&lt;script type="text/babel"&gt;
+    const { React, useState, h } = SimpleReact;
+
 function Greeting({ name }) {
     const [count, setCount] = useState(0);
     return (
@@ -103,6 +133,7 @@ function Greeting({ name }) {
         &lt;/div>
     );
 }
+&lt;/script>
 
 // 3. Use it with ssreact.ComponentName
 &lt;div id="ssreact.Greeting">&lt;/div></code></pre>
@@ -126,8 +157,7 @@ function Greeting({ name }) {
     </footer>
 
     <script type="text/babel">
-        const { React, useState } = SimpleReact;
-        const { h } = React;
+        const { React, useState, h } = SimpleReact;
 
         function DemoComponent() {
             const [count, setCount] = useState(0);

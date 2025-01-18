@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Todo List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ssreact.com/min.js"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-md mx-auto" id="ssreact.root"></div>
+    <script type="text/babel">
+        const { React, useState, useEffect, h } = SimpleReact;
+
+        // SVG for delete button
+        const DeleteIcon = () => (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        );
+
+        function TodoItem({ todo, onToggle, onDelete }) {
+            return (
+                <div class="flex items-center justify-between bg-white p-4 mb-2 rounded-lg shadow">
+                    <div class="flex items-center gap-3">
+                        <input
+                            type="checkbox"
+                            checked={todo.completed}
+                            onChange={() => onToggle(todo.id)}
+                            class="w-4 h-4 rounded border-gray-300"
+                        />
+                        <span class={`${todo.completed ? 'line-through text-gray-500' : 'text-gray-800'}`}>
+                            {todo.text}
+                        </span>
+                    </div>
+                    <button
+                        onClick={() => onDelete(todo.id)}
+                        class="text-red-500 hover:text-red-700 p-1"
+                        aria-label="Delete todo"
+                    >
+                        <DeleteIcon />
+                    </button>
+                </div>
+            );
+        }
+
+        function root() {
+            const [todos, setTodos] = useState(() => {
+                const savedTodos = localStorage.getItem('todos');
+                return savedTodos ? JSON.parse(savedTodos) : [];
+            });
+            const [input, setInput] = useState('');
+
+            // Save todos to localStorage whenever they change
+            useEffect(() => {
+                localStorage.setItem('todos', JSON.stringify(todos));
+            }, [todos]);
+
+            const addTodo = (e) => {
+                e.preventDefault();
+                if (input.trim()) {
+                    setTodos([
+                        ...todos,
+                        {
+                            id: Date.now(),
+                            text: input.trim(),
+                            completed: false
+                        }
+                    ]);
+                    setInput('');
+                }
+            };
+
+            const toggleTodo = (id) => {
+                setTodos(todos.map(todo =>
+                    todo.id === id ? { ...todo, completed: !todo.completed } : todo
+                ));
+            };
+
+            const deleteTodo = (id) => {
+                setTodos(todos.filter(todo => todo.id !== id));
+            };
+
+            return (
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-6">Todo List</h1>
+
+                    <form onSubmit={addTodo} class="mb-6">
+                        <div class="flex gap-2">
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                placeholder="Add a new task..."
+                                class="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                            />
+                            <button
+                                type="submit"
+                                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
+                            >
+                                Add
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="space-y-2">
+                        {todos.map(todo => (
+                            <TodoItem
+                                key={todo.id}
+                                todo={todo}
+                                onToggle={toggleTodo}
+                                onDelete={deleteTodo}
+                            />
+                        ))}
+                    </div>
+
+                    {todos.length === 0 && (
+                        <p class="text-gray-500 text-center py-4">
+                            No todos yet. Add some tasks above!
+                        </p>
+                    )}
+                </div>
+            );
+        }
+    </script>
+</body>
+
+</html>
