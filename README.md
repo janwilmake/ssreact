@@ -14,29 +14,20 @@ Now you can create React components, anywhere, as long as div id matches `ssreac
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Stupid Simple React + Tailwind</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ssreact.com/min.js"></script>
   </head>
 
   <body>
     <div class="w-60" id="ssreact.Counter"></div>
-    <script type="text/babel">
-      const { useState, h } = SimpleReact;
 
-      // Reusable Counter component
-      function Counter({ initialCount = 0, label = "Count" }) {
-        const [count, setCount] = useState(initialCount);
+    <script type="text/babel">
+      function Counter() {
+        const [count, setCount] = React.useState(0);
 
         return (
-          <div
-            className="p-4 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-gray-50 transition-colors"
-            onClick={() => setCount(count + 1)}
-          >
-            <h3 className="text-lg font-bold text-gray-800">
-              {label}: {count}
-            </h3>
-            <p className="mt-1 text-sm text-gray-600">Click to increment!</p>
+          <div onClick={() => setCount(count + 1)}>
+            <h3>Counter: {count}</h3>
+            <p>Click to increment!</p>
           </div>
         );
       }
@@ -48,3 +39,5 @@ Now you can create React components, anywhere, as long as div id matches `ssreac
 # Issues
 
 MicroJSX has a tiny problem with spaces. Because of this, we need to use `{" "}` after variable names, e.g. `Clicked {count}&nbsp;times`. Furthermore I've encountered some issues when trying to render escaped triple backticks.
+
+Please do reach out (or send patches) if you know how to solve these.
