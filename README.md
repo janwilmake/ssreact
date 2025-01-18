@@ -47,4 +47,4 @@ Now you can create React components, anywhere, as long as div id matches `ssreac
 
 # Issues
 
-MicroJSX has a tiny problem with spaces. Because of this, we need to use `{" "}` before and after variable names. For the rest, I haven't encountered any issues yet.
+MicroJSX has a tiny problem with spaces. Because of this, we need to use `{" "}` after variable names, e.g. `Clicked {count}&nbsp;times`. For the rest, I haven't encountered any issues yet.
