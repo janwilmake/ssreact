@@ -17,12 +17,10 @@
 
 
     <script type="text/babel">
-        const { React, useState, Fragment } = SimpleReact;
-        const { h } = React;
 
         // Reusable Counter component
         function Counter({ initialCount = 0, label = "Count" }) {
-            const [count, setCount] = useState(initialCount);
+            const [count, setCount] = React.useState(initialCount);
 
             return (
                 <div
@@ -37,8 +35,8 @@
 
         // Enhanced TodoList component
         function TodoList({ title = "Todo List" }) {
-            const [todos, setTodos] = useState([]);
-            const [input, setInput] = useState('');
+            const [todos, setTodos] = React.useState([]);
+            const [input, setInput] = React.useState('');
 
             const addTodo = () => {
                 if (input.trim()) {

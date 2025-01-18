@@ -48,7 +48,8 @@
   }
 
   function prepare(str) {
-    return escape(str.trim().replace(/&nbsp;/g, " "));
+    // NB: removed trim here to prevent spaces from not showing up before variable names
+    return escape(str.replace(/&nbsp;/g, " "));
   }
 
   function error(e) {

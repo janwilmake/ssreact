@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JSX Simple React</title>
+    <script src="bundle.js"></script>
+</head>
+
+<body>
+
+    <div id="ssreact.Counter"></div>
+    <script type="text/babel">
+        function Counter({ initialCount = 0, label = "Count" }) {
+            const [count, setCount] = React.useState(initialCount);
+
+            return (
+                <div onClick={() => setCount(count + 1)}>
+                    <h3>{label}: {count}</h3>
+                    <p>Click to increment!</p>
+                </div>
+            );
+        }
+    </script>
+</body>
+
+</html>

@@ -1,9 +1,7 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-    <title>Stupid Simple React + Tailwind</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Stupid Simple React</title>
     <script src="https://ssreact.com/min.js"></script>
 </head>
 
@@ -12,7 +10,11 @@
     <script type="text/babel">
         const { React, useState, h } = SimpleReact;
         function root() {
-            // your react code here
+            const [count, setCount] = useState(0);
+            return <div>
+                <div>Count: {count}</div>
+                <div onClick={() => setCount(count + 1)}>Add 1</div>
+            </div>
         }
     </script>
 </body>

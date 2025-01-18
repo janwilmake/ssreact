@@ -10,8 +10,6 @@
 <body class="bg-gray-100">
     <div class="max-w-2xl mx-auto p-4" id="ssreact.root"></div>
     <script type="text/babel">
-        const { React, useState, h } = SimpleReact;
-
         function ChatMessage({ message, isUser }) {
             return (
                 <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
@@ -24,10 +22,10 @@
         }
 
         function root() {
-            const [messages, setMessages] = useState([
+            const [messages, setMessages] = React.useState([
                 { text: "Hello! How can I help you today?", isUser: false },
             ]);
-            const [inputText, setInputText] = useState("");
+            const [inputText, setInputText] = React.useState("");
 
             const handleSubmit = (e) => {
                 e.preventDefault();

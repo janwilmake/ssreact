@@ -10,8 +10,6 @@
 <body class="bg-gray-100 min-h-screen p-8">
     <div class="max-w-md mx-auto" id="ssreact.root"></div>
     <script type="text/babel">
-        const { React, useState, useEffect, h } = SimpleReact;
-
         // SVG for delete button
         const DeleteIcon = () => (
             <svg
@@ -56,14 +54,14 @@
         }
 
         function root() {
-            const [todos, setTodos] = useState(() => {
+            const [todos, setTodos] = React.useState(() => {
                 const savedTodos = localStorage.getItem('todos');
                 return savedTodos ? JSON.parse(savedTodos) : [];
             });
-            const [input, setInput] = useState('');
+            const [input, setInput] = React.useState('');
 
             // Save todos to localStorage whenever they change
-            useEffect(() => {
+            React.useEffect(() => {
                 localStorage.setItem('todos', JSON.stringify(todos));
             }, [todos]);
 

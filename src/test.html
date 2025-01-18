@@ -2,13 +2,17 @@
 <html>
 
 <head>
-    <title>Stupid Simple React + Tailwind</title>
+    <title>JSX Simple React + Tailwind</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://ssreact.com/min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/preact@10.25.4/dist/preact.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/preact@10.25.4/hooks/dist/hooks.umd.js"></script>
+    <script src="microjsx.js"></script>
+    <script src="ssreact.js"></script>
 </head>
 
 <body>
-    <div class="w-60" id="ssreact.Counter"></div>
+    <div id="ssreact.Counter"></div>
+
     <script type="text/babel">
         // Reusable Counter component
         function Counter({ initialCount = 0, label = "Count" }) {
@@ -19,9 +23,7 @@
                     className="p-4 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-gray-50 transition-colors"
                     onClick={() => setCount(count + 1)}
                 >
-                    <h3 className="text-lg font-bold text-gray-800">
-                        {label}: {count}
-                    </h3>
+                    <h3 className="text-lg font-bold text-gray-800">{label}: {count}</h3>
                     <p className="mt-1 text-sm text-gray-600">Click to increment!</p>
                 </div>
             );
