@@ -22,7 +22,7 @@ Now you can create React components, anywhere, as long as div id matches `ssreac
   <body>
     <div class="w-60" id="ssreact.Counter"></div>
     <script type="text/babel">
-      const { useState } = SimpleReact;
+      const { useState, h } = SimpleReact;
 
       // Reusable Counter component
       function Counter({ initialCount = 0, label = "Count" }) {
