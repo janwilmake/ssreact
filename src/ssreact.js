@@ -9,33 +9,15 @@
     useMemo: preactHooks.useMemo,
   };
 
-  // Ensure UTF-8 encoding is preserved
-  function decodeUTF8(str) {
-    try {
-      // First try to decode any percent-encoded UTF-8 sequences
-      const percentDecoded = decodeURIComponent(escape(str));
-
-      // Then ensure we're working with proper UTF-8
-      const encoder = new TextEncoder();
-      const decoder = new TextDecoder("utf-8", { fatal: true });
-
-      return decoder.decode(encoder.encode(percentDecoded));
-    } catch (e) {
-      // If decoding fails, return original string
-      return str;
-    }
-  }
-
   // Process JSX scripts with proper UTF-8 handling
   function processScripts() {
     const scripts = document.querySelectorAll('script[type="text/babel"]');
     scripts.forEach((script) => {
       try {
-        // Properly decode the script content first
-        const decodedContent = decodeUTF8(script.textContent);
+        console.log(script.textContent);
 
-        const compiledCode = window.compileJSX(decodedContent, "React.h");
-
+        const compiledCode = window.compileJSX(script.textContent, "React.h");
+        console.log(compiledCode);
         const newScript = document.createElement("script");
         // Set UTF-8 charset on the new script
         newScript.charset = "utf-8";
