@@ -59,6 +59,7 @@
 
   Compiler.prototype.is_valid_char = function () {
     var c = this.d[this.i];
+
     return (
       c !== undefined &&
       (is_alpha(c) || is_numeric(c) || c === "-" || c === "_" || c === "$")
@@ -416,7 +417,7 @@
   }
 
   if ("undefined" === typeof module) {
-    window.CompileJSX = _compile;
+    window.compileJSX = _compile;
   } else {
     module.exports = _compile;
   }

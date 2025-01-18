@@ -9,17 +9,43 @@
     useMemo: preactHooks.useMemo,
   };
 
-  // Process JSX scripts
+  // Ensure UTF-8 encoding is preserved
+  function decodeUTF8(str) {
+    try {
+      // First try to decode any percent-encoded UTF-8 sequences
+      const percentDecoded = decodeURIComponent(escape(str));
+
+      // Then ensure we're working with proper UTF-8
+      const encoder = new TextEncoder();
+      const decoder = new TextDecoder("utf-8", { fatal: true });
+
+      return decoder.decode(encoder.encode(percentDecoded));
+    } catch (e) {
+      // If decoding fails, return original string
+      return str;
+    }
+  }
+
+  // Process JSX scripts with proper UTF-8 handling
   function processScripts() {
     const scripts = document.querySelectorAll('script[type="text/babel"]');
     scripts.forEach((script) => {
       try {
-        const compiledCode = CompileJSX(script.textContent, "React.h");
+        // Properly decode the script content first
+        const decodedContent = decodeUTF8(script.textContent);
+
+        const compiledCode = window.compileJSX(decodedContent, "React.h");
+
         const newScript = document.createElement("script");
+        // Set UTF-8 charset on the new script
+        newScript.charset = "utf-8";
         newScript.textContent = compiledCode;
+
         script.parentNode.replaceChild(newScript, script);
       } catch (error) {
         console.error("Error compiling JSX:", error);
+        console.error("Original content:", script.textContent);
+        console.error("Decoded content:", decodeUTF8(script.textContent));
       }
     });
   }
@@ -41,8 +67,13 @@
   }
 
   // Initialize when DOM is ready
-  document.addEventListener("DOMContentLoaded", () => {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      processScripts();
+      mountComponents();
+    });
+  } else {
     processScripts();
     mountComponents();
-  });
+  }
 })(typeof self !== "undefined" ? self : this);
