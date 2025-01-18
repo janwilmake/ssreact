@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Enhanced Simple React + Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/preact@10.19.3/dist/preact.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/preact@10.19.3/hooks/dist/hooks.umd.js"></script>
+    <script src="https://unpkg.com/htm/dist/htm.umd.js"></script>
+    <script>
+        (function (global) {
+            const exports = {
+                React: preact,
+                html: htm.bind(preact.h),
+                useState: preactHooks.useState,
+                useEffect: preactHooks.useEffect,
+                useRef: preactHooks.useRef,
+                useCallback: preactHooks.useCallback,
+                useMemo: preactHooks.useMemo
+            };
+
+            // Enhanced auto-execution
+            if (typeof document !== 'undefined') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Find all elements with IDs starting with "ssreact."
+                    const components = document.querySelectorAll('[id^="ssreact."]');
+
+                    components.forEach(element => {
+                        const componentName = element.id.split('.')[1];
+
+                        // Look for component in global scope
+                        const Component = global[componentName];
+
+                        if (typeof Component === 'function') {
+                            preact.render(preact.h(Component), element);
+                        } else {
+                            console.warn(`Component "${componentName}" not found for element with id "${element.id}"`);
+                        }
+                    });
+                });
+            }
+
+            // Add to window
+            global.SimpleReact = exports;
+        })(typeof self !== 'undefined' ? self : this);
+    </script>
+</head>
+
+<body>
+    <!-- Example using multiple components -->
+    <div id="ssreact.Counter" class="mb-8"></div>
+
+    <div class="text-3xl">Some regular HTML without JS/React</div>
+
+    <div id="ssreact.TodoList"></div>
+
+    <script>
+        const { html, useState } = SimpleReact;
+
+        // Example Counter component
+        function Counter() {
+            const [count, setCount] = useState(0);
+
+            return html`
+                <div class="flex flex-col items-center justify-center p-6">
+                    <div 
+                        class="p-6 bg-white rounded-lg shadow-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                        onClick=${() => setCount(count + 1)}
+                    >
+                        <h1 class="text-2xl font-bold text-gray-800">Count: ${count}</h1>
+                        <p class="mt-2 text-gray-600">Click me to increment!</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Example TodoList component
+        function TodoList() {
+            const [todos, setTodos] = useState([]);
+            const [input, setInput] = useState('');
+
+            const addTodo = () => {
+                if (input.trim()) {
+                    setTodos([...todos, input.trim()]);
+                    setInput('');
+                }
+            };
+
+            return html`
+                <div class="flex flex-col items-center justify-center p-6">
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Todo List</h2>
+                        <div class="flex mb-4">
+                            <input 
+                                type="text" 
+                                value=${input}
+                                onInput=${e => setInput(e.target.value)}
+                                class="flex-1 px-3 py-2 border rounded-l"
+                                placeholder="Add todo"
+                            />
+                            <button 
+                                onClick=${addTodo}
+                                class="px-4 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600"
+                            >
+                                Add
+                            </button>
+                        </div>
+                        <ul class="space-y-2">
+                            ${todos.map(todo => html`
+                                <li class="p-2 bg-gray-50 rounded" key=${todo}>${todo}</li>
+                            `)}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

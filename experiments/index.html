@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+    <script crossorigin
+        src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        function App() {
+            return React.createElement('div', null, 'Hello World');
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const root = ReactDOM.createRoot(document.getElementById("root"));
+            root.render(React.createElement(App));
+        });
+    </script>
+</body>
+
+</html>

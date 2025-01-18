@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Stupid Simple React</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.ssreact.com/min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+
+<body class="min-h-screen flex flex-col bg-gray-50">
+    <header class="bg-blue-600 text-white py-12 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-5xl font-bold mb-4">Stupid Simple React</h1>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-12 max-w-4xl">
+        <div id="ssreact.DemoComponent"></div>
+
+        <section class="mt-16">
+            <h2 class="text-3xl font-bold mb-6">Ridiculously Easy to Use</h2>
+            <div class="bg-gray-900 rounded-lg p-6 overflow-x-auto">
+                <pre><code class="language-jsx">// 1. Add the script
+&lt;script src="https://ssreact.com/min.js">&lt;/script>
+
+// 2. Write your component
+function Greeting({ name }) {
+    const [count, setCount] = useState(0);
+    return (
+        &lt;div onClick={() => setCount(count + 1)}>
+            Hello {name}! Clicks: {count}
+        &lt;/div>
+    );
+}
+
+// 3. Use it with ssreact.ComponentName
+&lt;div id="ssreact.Greeting">&lt;/div></code></pre>
+            </div>
+        </section>
+
+        <div class="mt-12 text-center">
+            <a href="playground.html"
+                class="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-blue-700 transition-colors">
+                Try it in the Playground
+            </a>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-8 px-4 mt-12">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-gray-400 font-mono">keep it simple, stupid!</p>
+        </div>
+    </footer>
+
+    <script type="text/babel">
+        const { React, useState } = SimpleReact;
+        const { h } = React;
+
+        function DemoComponent() {
+            const [count, setCount] = useState(0);
+
+            return (
+                <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+                    <h2 class="text-2xl font-bold mb-4">Try Me!</h2>
+                    <div
+                        onClick={() => setCount(count + 1)}
+                        class="inline-block cursor-pointer bg-blue-100 px-6 py-3 rounded-lg hover:bg-blue-200 transition-colors"
+                    >
+                        Clicked&nbsp;{count}&nbsp;times
+                    </div>
+                </div>
+            );
+        }
+    </script>
+
+    <script>
+        // Initialize Prism.js for syntax highlighting
+        Prism.highlightAll();
+    </script>
+</body>
+
+</html>

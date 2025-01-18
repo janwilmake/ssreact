@@ -1,0 +1,7 @@
+name = "janwilmake_ssreact"
+compatibility_date = "2024-12-05"
+assets = { directory= "./" }
+routes = [
+  { pattern = "ssreact.com", custom_domain = true },
+  { pattern = "www.ssreact.com", custom_domain = true }
+]

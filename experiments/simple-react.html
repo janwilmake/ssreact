@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple React + Tailwind</title>
+    <!-- Load Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Preact -->
+    <script src="https://cdn.jsdelivr.net/npm/preact@10.19.3/dist/preact.umd.js"></script>
+    <!-- Load Preact hooks -->
+    <script src="https://cdn.jsdelivr.net/npm/preact@10.19.3/hooks/dist/hooks.umd.js"></script>
+    <!-- Load HTM -->
+    <script src="https://unpkg.com/htm/dist/htm.umd.js"></script>
+    <!-- Load our simple-react bundle -->
+    <script>
+
+        // simple-react.js
+        (function (global) {
+            // Export main objects
+            const exports = {
+                React: preact,
+                html: htm.bind(preact.h),
+                useState: preactHooks.useState,
+                useEffect: preactHooks.useEffect,
+                useRef: preactHooks.useRef,
+                useCallback: preactHooks.useCallback,
+                useMemo: preactHooks.useMemo,
+                render: preact.render
+            };
+
+            // Add to window
+            global.SimpleReact = exports;
+        })(typeof self !== 'undefined' ? self : this);
+    </script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        const { React, html, useState, render } = SimpleReact;
+
+        function Counter() {
+            const [count, setCount] = useState(0);
+
+            return html`
+        <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+          <div 
+            class="p-6 bg-white rounded-lg shadow-lg cursor-pointer hover:bg-gray-50 transition-colors"
+            onClick=${() => setCount(count + 1)}
+          >
+            <h1 class="text-2xl font-bold text-gray-800">Count: ${count}</h1>
+            <p class="mt-2 text-gray-600">Click me to increment!</p>
+          </div>
+        </div>
+      `;
+        }
+
+        render(React.h(Counter), document.getElementById('root'));
+    </script>
+</body>
+
+</html>

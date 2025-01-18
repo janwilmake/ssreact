@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JSX Simple React + Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/preact@10.19.3/dist/preact.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/preact@10.19.3/hooks/dist/hooks.umd.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.8/babel.min.js"></script>
+    <script>
+        (function (global) {
+            const exports = {
+                React: preact,
+                useState: preactHooks.useState,
+                useEffect: preactHooks.useEffect,
+                useRef: preactHooks.useRef,
+                useCallback: preactHooks.useCallback,
+                useMemo: preactHooks.useMemo,
+                h: preact.h,
+                Fragment: preact.Fragment
+            };
+
+            // Move component mounting to a function we can call after Babel
+            function mountComponents() {
+                const components = document.querySelectorAll('[id^="ssreact."]');
+
+                components.forEach(element => {
+                    const componentName = element.id.split('.')[1];
+                    const Component = global[componentName];
+
+                    if (typeof Component === 'function') {
+                        preact.render(preact.h(Component), element);
+                    } else {
+                        console.warn(`Component "${componentName}" not found for element with id "${element.id}"`);
+                    }
+                });
+            }
+
+            // Add to window
+            global.SimpleReact = {
+                ...exports,
+                mount: mountComponents
+            };
+        })(typeof self !== 'undefined' ? self : this);
+    </script>
+</head>
+
+<body>
+    <div id="ssreact.TodoListWithCounter"></div>
+    <div class="text-3xl">we can also use tailwind anywhere</div>
+    <div id="ssreact.Counter"></div>
+
+    <script type="text/babel" data-presets="react">
+        const { React, useState, Fragment } = SimpleReact;
+        const { h } = React;
+
+        // Reusable Counter component
+        function Counter({ initialCount = 0, label = "Count" }) {
+            const [count, setCount] = useState(initialCount);
+
+            return (
+                <div
+                    className="p-4 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-gray-50 transition-colors"
+                    onClick={() => setCount(count + 1)}
+                >
+                    <h3 className="text-lg font-bold text-gray-800">{label}: {count}</h3>
+                    <p className="mt-1 text-sm text-gray-600">Click to increment!</p>
+                </div>
+            );
+        }
+
+        // Enhanced TodoList component
+        function TodoList({ title = "Todo List" }) {
+            const [todos, setTodos] = useState([]);
+            const [input, setInput] = useState('');
+
+            const addTodo = () => {
+                if (input.trim()) {
+                    setTodos([...todos, input.trim()]);
+                    setInput('');
+                }
+            };
+
+            return (
+                <div className="w-64 p-6 bg-white rounded-lg shadow-lg">
+                    <h2 className="text-xl font-bold text-gray-800 mb-4">{title}</h2>
+                    <div className="flex mb-4">
+                        <input
+                            type="text"
+                            value={input}
+                            onInput={e => setInput(e.target.value)}
+                            className="flex-1 px-3 py-2 border rounded-l"
+                            placeholder="Add todo"
+                        />
+                        <button
+                            onClick={addTodo}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600"
+                        >
+                            Add
+                        </button>
+                    </div>
+                    <ul className="space-y-2">
+                        {todos.map(todo => (
+                            <li className="p-2 bg-gray-50 rounded" key={todo}>{todo}</li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        // Component that composes Counter and TodoList
+        function TodoListWithCounter() {
+            return (
+                <div className="flex flex-col items-center justify-center p-6 space-y-6">
+                    <Counter initialCount={0} label="Tasks Completed" />
+                    <TodoList title="My Todo List" />
+                </div>
+            );
+        }
+
+        // Mount components after Babel has processed everything
+        SimpleReact.mount();
+    </script>
+</body>
+
+</html>

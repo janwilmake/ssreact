@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SSReact Playground</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.js"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2">SSReact Playground</h1>
+            <p class="text-gray-600">Edit the code on the left, see the result on the right!</p>
+        </header>
+
+        <div class="grid grid-cols-2 gap-6 h-[calc(100vh-200px)]">
+            <!-- Code Editor Panel -->
+            <div class="bg-gray-900 rounded-lg p-4 relative">
+                <div id="monacoEditor" class="w-full h-full"></div>
+                <button onclick="updatePreview()"
+                    class="absolute bottom-6 right-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+                    Run
+                </button>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="border-b px-4 py-2 bg-gray-50 rounded-t-lg">
+                    <h3 class="text-gray-600 font-semibold">Preview</h3>
+                </div>
+                <iframe id="preview" class="w-full h-full rounded-b-lg"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initial code template
+        const initialCode = `<!DOCTYPE html>
+<html>
+<head>
+    <title>SSReact Example</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <script src="https://ssreact.com/min.js"><\/script>
+</head>
+<body class="p-8">
+    <div id="ssreact.Greeting"></div>
+
+    <script type="text/babel">
+        const { React, useState } = SimpleReact;
+        const { h } = React;
+
+        function Greeting({ name = "World" }) {
+            const [count, setCount] = useState(0);
+            return (
+                <div 
+                    onClick={() => setCount(count + 1)}
+                    class="bg-blue-100 p-4 rounded-lg cursor-pointer hover:bg-blue-200 transition-colors"
+                >
+                    Hello{' '}{name}! Clicks:{' '}{count}
+                </div>
+            );
+        }
+    <\/script>
+</body>
+</html>`;
+
+        // Set up Monaco editor
+        require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            window.editor = monaco.editor.create(document.getElementById('monacoEditor'), {
+                value: initialCode,
+                language: 'html',
+                theme: 'vs-dark',
+                minimap: {
+                    enabled: false
+                },
+                scrollBeyondLastLine: false,
+                automaticLayout: true
+            });
+
+            // Run initial preview
+            updatePreview();
+        });
+
+        // Function to update the preview
+        function updatePreview() {
+            const preview = document.getElementById('preview');
+            const code = window.editor.getValue();
+            preview.srcdoc = code;
+        }
+    </script>
+</body>
+
+</html>
